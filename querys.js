@@ -11,6 +11,7 @@ async function agregarCurso(curso) {
 	try {
 		await pool.query("BEGIN");
 		const addCourse = {
+			name: 'fetch-user',
 			text: "INSERT INTO cursos(nombre, nivel, fecha, duracion) VALUES($1, $2, $3, $4) RETURNING *;",
 			values: [curso.nombre, curso.nivelTecnico, curso.fechaInicio, curso.duracion],
 		};
@@ -23,6 +24,17 @@ async function agregarCurso(curso) {
 	}
 }
 
+// -----------------
+async function getCursos() {
+	try {
+		const result = await pool.query("SELECT * FROM cursos");
+		return result.rows;
+	} catch (e) {
+		return e;
+	}
+}
+
 module.exports = {
 	agregarCurso,
+	getCursos
 }

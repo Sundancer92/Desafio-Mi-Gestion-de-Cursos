@@ -10,6 +10,7 @@
 			integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
 			crossorigin="anonymous"
 		/>
+		<script src="https://momentjs.com/downloads/moment.js"></script>
 	</head>
 	<body>
 		<div id="AgregarCurso">
@@ -114,6 +115,7 @@
 
 <style>
 	body {
+		color: beige;
 		text-align: center;
 		background-color: black;
 	}
@@ -133,7 +135,9 @@
 	async function getData() {
 		await axios.get(url + "s").then((data) => {
 			cursos = data.data;
+			console.log("----LOG HTML getCursos----");
 			console.log(cursos);
+
 			tbody.innerHTML = "";
 			cursos.forEach((c, i) => {
 				tbody.innerHTML += `
@@ -141,7 +145,7 @@
           <td>${i + 1}</td>
           <td>${c.nombre}</td>
           <td>${c.nivel}</td>
-          <td>${c.fecha}</td>
+          <td>${formatDate(c.fecha)}</td>
           <td>${c.duracion}</td>
           <td>
             <button class="btn btn-warning" onclick="prepararCurso(${i},'${
@@ -195,6 +199,7 @@
 		document.getElementById("agregar").style.display = "none";
 		document.getElementById("editar").style.display = "block";
 	}
+
 	function editarCurso(id) {
 		axios
 			.put(url, {
@@ -210,4 +215,10 @@
 				document.getElementById("editar").style.display = "none";
 			});
 	}
+
+	const formatDate = (date) => {
+		const dateFormat = moment(date).format("LL");
+		return `${dateFormat} `;
+	};
+	formatDate();
 </script>
