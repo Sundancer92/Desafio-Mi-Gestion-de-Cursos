@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 // ! -------- DEPRECADO --------
 // ? Querys
 
-const { agregarCurso, getCursos } = require("./querys");
+const { agregarCurso, getCursos, editarCurso, deleteCurso } = require("./querys");
 
 // ? /Querys
 app.listen(3000, () => {
@@ -30,3 +30,19 @@ app.get("/cursos", async (req, res) => {
 	const result = await getCursos();
 	res.send(result);
 });
+
+// -----------------
+app.put("/curso", async (req, res) => {
+	const curso = req.body;
+	const result = await editarCurso(curso);
+	res.send(result);
+});
+
+// -----------------
+
+app.delete("/cursos/:id", async(req, res) => {
+	const { id } = req.params;
+	console.log(id);
+	const result = await deleteCurso(id);
+	res.send(result);
+})

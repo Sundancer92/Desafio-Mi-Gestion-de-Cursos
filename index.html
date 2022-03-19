@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-ES">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -50,10 +50,13 @@
 						>
 						<div class="col-sm-10">
 							<input
-								type="date"
+								type="text"
+								placeholder="MM/DD/YYYY"
+								onfocus="(this.type='date')"
+								onblur="(this.type='text')"
 								class="form-control"
 								id="fechaInicio"
-								value="2020-11-23"
+								value=""
 							/>
 						</div>
 					</div>
@@ -102,7 +105,7 @@
 							<th scope="col">Nivel Técnico</th>
 							<th scope="col">Fecha de Inicio</th>
 							<th scope="col">Duración</th>
-							<th scope="col">-</th>
+							<th scope="col">Opciones</th>
 						</tr>
 					</thead>
 					<tbody id="cuerpo"></tbody>
@@ -135,9 +138,6 @@
 	async function getData() {
 		await axios.get(url + "s").then((data) => {
 			cursos = data.data;
-			console.log("----LOG HTML getCursos----");
-			console.log(cursos);
-
 			tbody.innerHTML = "";
 			cursos.forEach((c, i) => {
 				tbody.innerHTML += `
@@ -181,17 +181,17 @@
 	}
 
 	function eliminarCurso(i, nombre) {
-		axios.delete(url + "/" + nombre).then(() => {
+		axios.delete(url + "s/" + nombre).then(() => {
 			alert("Curso " + nombre + " eliminado");
 			getData();
 		});
 	}
 
+	// Pega los datos en el formulario para la edicion del curso
 	function prepararCurso(i, id) {
-		console.log(cursos);
 		nombre.value = cursos[i].nombre;
 		nivelTecnico.value = cursos[i].nivel;
-		fechaInicio.value = cursos[i].fecha;
+		fechaInicio.value = formatDate(cursos[i].fecha);
 		duracion.value = cursos[i].duracion;
 		document
 			.getElementById("editar")
@@ -217,7 +217,7 @@
 	}
 
 	const formatDate = (date) => {
-		const dateFormat = moment(date).format("LL");
+		const dateFormat = moment(date).format("L");
 		return `${dateFormat} `;
 	};
 	formatDate();
